@@ -1,5 +1,6 @@
 # DIUFF
-[!Screenshot](/assets/49567056/561bb4eb-bcd0-4c7c-b313-ad4583f4664e)
+![Sans titre](https://github.com/Felzow47/DIUFF/assets/49567056/7519cdde-0943-48ca-b8de-13f6609f9af7.png)
+
 
 Discord **!image** upload from a folder
 
@@ -29,7 +30,7 @@ Run `python .\Main.py`
 
 ## Usage
 
-send !image in the channel where you want the image to be posted and wait ^^ 
+send `!image` in the channel where you want the image to be posted and wait ^^ 
 
 ## Limitations/bugs
 * Only files ending jpg, gif or png are uploaded.
@@ -37,3 +38,4 @@ send !image in the channel where you want the image to be posted and wait ^^
 ## Troubleshooting
 
 if you have bugs or problem open an [issue](https://github.com/Felzow47/DIUFF/issues/new)
+
