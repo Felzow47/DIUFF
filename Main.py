@@ -1,7 +1,6 @@
 import discord
 from discord import Intents
-import os 
-import random
+import os
 
 intents = Intents.default()
 intents.message_content = True
@@ -15,7 +14,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.content.startswith('!image'):
-        image_path = os.path.join(r"C:\Users\Felzow47\Desktop\Temp", random.choice(os.listdir(r"C:\Users\Felzow47\Desktop\Temp")))
-        await message.channel.send(file=discord.File(image_path))
+        image_path = os.path.join(r"C:\Users\Felzow47\Desktop\Temp")
+        for filename in os.listdir(image_path):
+            await message.channel.send(file=discord.File(os.path.join(image_path, filename)))
 
-client.run('MTIwMzA3ODkzOTY5NDcyNzE5OQ.GsMqme.2HxsUJBlaAin8p9t-cdnqU4V27UTvJPLceWIPQ')
+client.run('Bot Token')
