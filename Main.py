@@ -25,12 +25,14 @@ async def on_ready():
 async def on_message(message):
     if message.content.startswith('!image'):
         image_path = os.path.join(r"C:\Users\Felzow47\Desktop\Temp")
+        nb_images_envoyées = 0
         for filename in os.listdir(image_path):
             filename = filename.lower()  # Conversion en minuscules pour éviter les problèmes de casse
             if filename not in deja_envoyees:
                 deja_envoyees.add(filename)
                 await message.channel.send(file=discord.File(os.path.join(image_path, filename)))
+                nb_images_envoyées += 1
 
-                # Enregistrer le nom de l'image dans le fichier texte
-                with open("images_envoyees.txt", "a") as fichier:
-                    fichier.write(filename + "\n")
+        # Envoyer un message si aucune image n'a été envoyée
+        if nb_images_envoyées == 0:
+            await message.channel.send("Aucune nouvelle image à envoyer !")
