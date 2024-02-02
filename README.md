@@ -13,20 +13,20 @@ Discord **!image** upload from a folder
 
 ## Getting started
 
-You'll need to [download and install Python](https://www.python.org/downloads/),
+* You'll need to [download and install Python](https://www.python.org/downloads/),
 
-download [Main.py](https://github.com/Felzow47/DIUFF/releases/download/Release/Main.py)
+* download [Main.py](https://github.com/Felzow47/DIUFF/releases/download/Release/Main.py)
 
-Create a bot on [discord dev portal](https://discord.com/developers/applications)
+* Create a bot on [discord dev portal](https://discord.com/developers/applications)
 
-Add the bot to your discord server 
+* Add the bot to your discord server 
 
-Replace path in `image_path = os.path.join(r"YOUR FOLDER HERE")` with your folder with your image
-Replace with your Discord bot token in `client.run('YOUR TOKEN HERE')` 
+* Replace path in `image_path = os.path.join(r"YOUR FOLDER HERE")` with your folder with your image
+* Replace with your Discord bot token in `client.run('YOUR TOKEN HERE')` 
 
-Run `Pip install discord` in cmd
+* Run `Pip install discord` in cmd
 
-Run `python .\Main.py`
+* Run `python .\Main.py`
 
 ## Usage
 
