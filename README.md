@@ -36,7 +36,7 @@ send `!image <name of the custom command you created earlier with !ajouter>` in 
 
 ## Limitations/bugs
 * Only files ending jpg, gif or png are uploaded.
-* if the folder does't exist the bot won't add in the .json file
+* if the folder does't exist the bot won't add in the .json file.
 
 ## Troubleshooting
 
