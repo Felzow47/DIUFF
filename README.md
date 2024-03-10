@@ -21,7 +21,6 @@ Discord **!image** upload from a folder
 
 * Add the bot to your discord server 
 
-* Replace path in `image_path = os.path.join(r"YOUR FOLDER HERE")` with your folder with your image
 * Replace with your Discord bot token in `client.run('YOUR TOKEN HERE')` 
 
 * Run `Pip install discord` in cmd
