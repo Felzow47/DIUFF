@@ -47,24 +47,49 @@ async def on_ready():
 # Fonction de compression d'image
 def compresser_image(filepath, max_size=8 * 1024 * 1024):
     """Compresse l'image pour qu'elle respecte la limite Discord (max_size en octets)."""
-    with Image.open(filepath) as img:
-        # Vérifier si l'image dépasse la taille maximale
-        current_size = os.path.getsize(filepath)
-        if current_size <= max_size:
-            return filepath  # Pas besoin de compression
+    try:
+        with Image.open(filepath) as img:
+            # Vérifier si l'image dépasse la taille maximale
+            current_size = os.path.getsize(filepath)
+            if current_size <= max_size:
+                return filepath  # Pas besoin de compression
 
-        # Créer le nom du fichier compressé
-        file_name, file_ext = os.path.splitext(filepath)
-        output_path = f"{file_name}_compressed{file_ext}"
+            # Créer le nom du fichier compressé
+            file_name, file_ext = os.path.splitext(filepath)
+            output_path = f"{file_name}_compressed.jpg"  # Toujours utiliser .jpg pour la sortie
 
-        # Réduire la qualité jusqu'à ce que la taille soit acceptable
-        quality = 95
-        while current_size > max_size and quality > 10:
+            # Convertir en RGB si nécessaire
+            if img.mode in ('RGBA', 'P'):
+                # Créer un fond blanc
+                background = Image.new('RGB', img.size, (255, 255, 255))
+                if img.mode == 'RGBA':
+                    background.paste(img, mask=img.split()[3])  # 3 est le canal alpha
+                else:
+                    background.paste(img)
+                img = background
+
+            # Réduire la qualité jusqu'à ce que la taille soit acceptable
+            quality = 95
             img.save(output_path, "JPEG", quality=quality)
             current_size = os.path.getsize(output_path)
-            quality -= 5
+            
+            while current_size > max_size and quality > 10:
+                img.save(output_path, "JPEG", quality=quality)
+                current_size = os.path.getsize(output_path)
+                quality -= 5
 
-        return output_path if current_size <= max_size else None
+            if current_size <= max_size:
+                return output_path
+            else:
+                if os.path.exists(output_path):
+                    os.remove(output_path)
+                return None
+
+    except Exception as e:
+        print(f"Erreur lors de la compression de {filepath}: {str(e)}")
+        if 'output_path' in locals() and os.path.exists(output_path):
+            os.remove(output_path)
+        return None
 
 @bot.command()
 async def image(ctx):
@@ -74,10 +99,20 @@ async def image(ctx):
         await ctx.send(f"Commande inconnue : {commande}")
         return
 
+    # Compter le nombre total d'images dans les dossiers
+    total_images = 0
+    for dossier in commandes_personnalisees[commande]:
+        for root, _, files in os.walk(dossier):
+            for f in files:
+                if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+                    total_images += 1
+
     status_message = await ctx.send("🔍 Initialisation de la recherche...")
     nb_images_envoyees = 0
+    dossiers_scannes = []
 
     for dossier in commandes_personnalisees[commande]:
+        dossiers_scannes.append(dossier)
         await status_message.edit(content=f"🔍 Recherche des images dans le dossier : `{dossier}` ...")
 
         for root, _, files in os.walk(dossier):
@@ -120,6 +155,16 @@ async def image(ctx):
         await status_message.edit(content=f"❌ Aucune nouvelle image à envoyer pour la commande : {commande}.")
     else:
         await status_message.edit(content=f"✅ Recherche terminée : {nb_images_envoyees} image(s) envoyée(s).")
+    
+    # Calcul et affichage des images restantes dans la console
+    images_restantes = total_images - len([img for img in deja_envoyees if any(img.lower().endswith(ext) for ext in ('.png', '.jpg', '.jpeg', '.gif'))])
+    print(f"[INFO] Il reste {images_restantes} images à poster pour la commande {commande}")
+
+    # Ajout du message de résumé
+    resume = f"📊 **Envoi terminé. Résumé de la commande `{commande}`**\n"
+    resume += f"• Images envoyées : {nb_images_envoyees}\n"
+    
+    await ctx.send(resume)
 
 # Commande "!ajouter"
 @bot.command()
