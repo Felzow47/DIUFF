@@ -1,6 +1,12 @@
 import discord
+from discord import Intents
+import os  # Import os pour la manipulation des chemins de fichiers
+import random
 
-client = discord.Client()
+intents = Intents.default()
+intents.message_content = True
+
+client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
@@ -9,8 +15,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.content.startswith('!image'):
-        # Remplacer "votre_dossier_images" par le chemin réel de votre dossier
-        image_path = os.path.join("votre_dossier_images", random.choice(os.listdir("votre_dossier_images")))
+        image_path = os.path.join(r"C:\Users\Felzow47\Desktop\Temp", random.choice(os.listdir(r"C:\Users\Felzow47\Desktop\Temp")))
         await message.channel.send(file=discord.File(image_path))
 
-client.run('votre_token_bot')
+# Remplacez "votre_token_bot" par votre token de bot réel, mais ne l'exposez pas publiquement
+client.run('MTIwMzA3ODkzOTY5NDcyNzE5OQ.GsMqme.2HxsUJBlaAin8p9t-cdnqU4V27UTvJPLceWIPQ')
